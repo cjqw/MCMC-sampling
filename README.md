@@ -1,36 +1,29 @@
 # mcmc-sampling
 
-FIXME: description
+Calculate the possibility density using MCMC method. The density
+function is the average of two distinct gauss function in the plane.
+
+Now MH algorithm has been implemented.
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Download from http://github.com/cjqw/mcmc-sampling
 
 ## Usage
 
-FIXME: explanation
+You can run mcmc-sampling in repl.
 
-    $ java -jar mcmc-sampling-0.1.0-standalone.jar [args]
+    (run x)
+
+To calc the possibility density via MH algorithm
 
 ## Options
 
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+TODO
 
 ## License
 
-Copyright © 2017 FIXME
+Copyright © 2017 cjqw
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
