@@ -5,7 +5,7 @@
 
 (def mu [0 0])
 (def a [[1 0] [0 1]])
-(def gauss-sample-2d (partial util/gauss-sample-2d mu a))
+(def gauss-sample-2d (partial util/gauss-sample-2d))
 (def gauss-function-2d (partial util/gauss-function-2d mu a))
 
 (defn- mc-calc-probability-density

@@ -41,11 +41,12 @@
     (* left right)))
 
 (defn gauss-sample-2d
-  [mu a]
+  "Return a vector satisfying gauss-distribution
+  where mu = [0 0] and a = [[1 0] [0 1]]."
+  []
   (let [x (gauss-sample 0 1)
-        y (gauss-sample 0 1)
-        v [x y]]
-    (m/mmul a (m/sub v mu))))
+        y (gauss-sample 0 1)]
+    [x y])
 
 (defn distance
   "Calculate the distance of two points."
