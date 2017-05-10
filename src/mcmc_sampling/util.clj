@@ -8,11 +8,14 @@
 
 (defn gauss-sample
   "Return a variable which satisfying gauss distribution."
-  []
+  [mu sigma]
   (let [u (uniform-sample)
-        v (uniform-sample)]
-    (* (Math/sqrt (* -2 (Math/log u)))
-       (Math/cos (* 2 Math/PI v)))))
+        v (uniform-sample)
+        x (* (Math/sqrt (* -2 (Math/log u)))
+           (Math/cos (* 2 Math/PI v)))]
+    (+ mu (* x sigma))))
+
+(def standard-gauss-sample (partial gauss-sample 0 1))
 
 (defn gauss-function
   [mu sigma x]
@@ -43,8 +46,8 @@
   "Return a vector satisfying gauss-distribution
   where mu = [0 0] and a = [[1 0] [0 1]]."
   []
-  (let [x (gauss-sample)
-        y (gauss-sample)]
+  (let [x (standard-gauss-sample)
+        y (standard-gauss-sample)]
     [x y]))
 
 (defn distance
