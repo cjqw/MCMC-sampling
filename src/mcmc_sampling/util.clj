@@ -20,7 +20,7 @@
   (let [u (uniform-sample)
         v (uniform-sample)
         x (* (Math/sqrt (* -2 (Math/log u)))
-           (Math/cos (* 2 Math/PI v)))]
+             (Math/cos (* 2 Math/PI v)))]
     (+ mu (* x sigma))))
 
 (def standard-gauss-sample (partial gauss-sample 0 1))

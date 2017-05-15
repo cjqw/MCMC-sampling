@@ -8,7 +8,7 @@
 (def mu2 [1 1])
 (def a1 [[1 0] [0 1]])
 (def a2 [[1 0] [0 1]])
-(def number-of-samples 100000)
+(def number-of-samples 100)
 (def d 0.1)
 (def area-of-d (* Math/PI (util/sqr d)))
 
@@ -59,9 +59,22 @@
         (recur (inc i)
                (+ cnt (util/neighbor? x (samples i) d)))))))
 
+(defn- output
+  [samples]
+  (reduce #(str %1 "\n" %2)
+          (map #(str (first %) " " (second %))
+               samples)))
 
-(def run mc-calc-probability-density)
-
-(defn -main
+(defn- run
   []
-  (println (run [0.1 0.1])))
+  (println (mc-calc-probability-density [0.1 0.1]))
+  )
+
+(defn- print-to-file
+  []
+  (let [mh-sample (mh-get-samples density-function)]
+    (println "IO Stage")
+    (spit "mh.output" mh-sample)
+    ))
+
+(def -main run)
