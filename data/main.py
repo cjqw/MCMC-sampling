@@ -1,8 +1,17 @@
 #!env /usr/bin/python3
 
 from math import *
+import os
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from mpl_toolkits.mplot3d import Axes3D
+
 
 FILE_NAME = 'mh.output'
+DRAW_SURFACE = False
+DRAW_KL = False
 
 def parseItem(item):
     x,y = item.split(' ')
@@ -15,7 +24,7 @@ def parseData(data):
 def density(position):
     x,y = position
     f1 = (0.5/pi)*exp(-0.5 * (x * x + y * y))
-    x,y = x-1,y-1
+    x,y = x-3,y-3
     f2 = (0.5/pi)*exp(-0.5 * (x * x + y * y))
     return (f1+f2)/2
 
@@ -24,7 +33,7 @@ def readData():
         data = fin.read()
     return parseData(data)
 
-def normalize(item):
+def encode(item):
     x,y = item
     x = x + 100
     y = y + 100
@@ -43,7 +52,7 @@ def KL_Divergence(data):
     length = len(data)
     cnt = {}
     for item in data:
-        index = normalize(item)
+        index = encode(item)
         cnt[index] = cnt.get(index,0) + 1
     result = 0
     for key,value in cnt.items():
@@ -52,8 +61,47 @@ def KL_Divergence(data):
         result += p*log(p/q)
     return result
 
+def drawSurface():
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    X = np.arange(-3, 6, 0.25)
+    Y = np.arange(-3, 6, 0.25)
+    X, Y = np.meshgrid(X, Y)
+    Z = [[density((x,y)) for x,y in zip(xi,yi)]
+         for xi,yi in zip(X,Y)]
+    surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
+                       linewidth=0, antialiased=False)
+    ax.zaxis.set_major_locator(LinearLocator(10))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+    fig.colorbar(surf, shrink=0.5, aspect=5)
+    plt.show()
+
+def drawKL(KLValues):
+    X,Y = [],[]
+    for item in KLValues:
+        x,y = item
+        X.append(x)
+        Y.append(y)
+    plt.plot(X,Y,label = "KL-divergence")
+    plt.legend()
+    plt.show()
+
+def drawSamples(data):
+    X = [item[0] for item in data]
+    Y = [item[1] for item in data]
+    pass
+
+if DRAW_SURFACE:
+    drawSurface()
+
 data = readData()
-for i in range(100):
+if DRAW_SAMPLES:
+    drawSamples(data)
+
+KLValues = []
+for i in range(100,100):
     length = (i+1) * 10000
-    print(length)
-    print(KL_Divergence(data[:length]))
+    KL_Value = KL_Divergence(data[:length])
+    KLValues.append([length,KL_Value])
+if DRAW_KL:
+    drawKL(KLValues)
