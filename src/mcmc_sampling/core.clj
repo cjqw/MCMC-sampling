@@ -5,10 +5,10 @@
   (:gen-class))
 
 (def mu1 [0 0])
-(def mu2 [1 1])
+(def mu2 [3 3])
 (def a1 [[1 0] [0 1]])
 (def a2 [[1 0] [0 1]])
-(def number-of-samples 100)
+(def number-of-samples 1000000)
 (def d 0.1)
 (def area-of-d (* Math/PI (util/sqr d)))
 
