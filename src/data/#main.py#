@@ -10,8 +10,8 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 FILE_NAME = 'mh.output'
-DRAW_SURFACE = False
-DRAW_KL = False
+DRAW_SURFACE = True
+DRAW_KL = True
 
 def parseItem(item):
     x,y = item.split(' ')
@@ -24,7 +24,7 @@ def parseData(data):
 def density(position):
     x,y = position
     f1 = (0.5/pi)*exp(-0.5 * (x * x + y * y))
-    x,y = x-3,y-3
+    x,y = x-2,y-2
     f2 = (0.5/pi)*exp(-0.5 * (x * x + y * y))
     return (f1+f2)/2
 
@@ -86,22 +86,18 @@ def drawKL(KLValues):
     plt.legend()
     plt.show()
 
-def drawSamples(data):
-    X = [item[0] for item in data]
-    Y = [item[1] for item in data]
-    pass
-
 if DRAW_SURFACE:
     drawSurface()
 
 data = readData()
-if DRAW_SAMPLES:
-    drawSamples(data)
 
 KLValues = []
-for i in range(100,100):
+for i in range(0,100):
     length = (i+1) * 10000
     KL_Value = KL_Divergence(data[:length])
+    print(length,KL_Value)
     KLValues.append([length,KL_Value])
+
 if DRAW_KL:
     drawKL(KLValues)
+

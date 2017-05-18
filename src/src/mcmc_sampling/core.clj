@@ -1,3 +1,4 @@
+;;; Horibble BUG!!!!!!!!!!!!!!!!
 (ns mcmc-sampling.core
   (:require [mcmc-sampling.util :as util]
             [mcmc-sampling.gibbs :as gibbs]
@@ -5,7 +6,7 @@
   (:gen-class))
 
 (def mu1 [0 0])
-(def mu2 [3 3])
+(def mu2 [2 2])
 (def a1 [[1 0] [0 1]])
 (def a2 [[1 0] [0 1]])
 (def number-of-samples 1000000)
@@ -22,13 +23,22 @@
 
 (def density-function multi-gauss-function)
 
+(defn get-random-sample
+  []
+  (m/add (util/gauss-sample-2d) [1 1]))
+
+(defn sample-density-function
+  [point]
+  (util/standard-gauss-function-2d
+   (m/add point [-1 -1])))
+
 (defn- mh-get-next-sample
   "Get next sample in MH algorithm"
   [previous-sample]
-  (let [new-sample (util/gauss-sample-2d)
-        threshold (/ (* (util/standard-gauss-function-2d previous-sample)
+  (let [new-sample (get-random-sample)
+        threshold (/ (* (sample-density-function previous-sample)
                         (density-function new-sample))
-                     (* (util/standard-gauss-function-2d new-sample)
+                     (* (sample-density-function new-sample)
                         (density-function previous-sample)))
         alpha (min threshold 1)
         u (util/uniform-sample)]
